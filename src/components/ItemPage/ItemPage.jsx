@@ -11,7 +11,7 @@ function ItemPage({ data, ItemKey, setUpdate, update }) {
 		status: '',
 	};
 	const [formData, setFormData] = useState(initialFormData);
-	const item = data[ItemKey];
+	const item = data.data[ItemKey];
 
 	const clearFormData = () => {
 		setFormData(initialFormData);

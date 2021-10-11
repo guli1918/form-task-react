@@ -1,4 +1,5 @@
-import { Add, Delete, Edit } from '@mui/icons-material';
+import { Delete, Edit } from '@mui/icons-material';
+import { CircularProgress } from '@mui/material';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import ItemPage from '../ItemPage/ItemPage';
@@ -6,111 +7,19 @@ import ItemPage from '../ItemPage/ItemPage';
 import './formPage.css';
 
 function FormPage() {
-	const [data, setData] = useState([
-		{
-			orderNo: 'xh-538971-06949994-3860384',
-			date: '7/29/2019',
-			customer: 'Belden Inc',
-			status: "'Delivered'",
-			consignee: 'John Hancock',
-		},
-		{
-			orderNo: 'tr-612141-15215125-4584563',
-			date: '7/29/2020',
-			customer: 'TAMTAR Inc',
-			status: "'Waiting'",
-			consignee: 'Income Fund',
-		},
-		{
-			orderNo: 'OQ-151221-56954634-03953468',
-			date: '7/29/2018',
-			customer: 'TEsgtakso Inc',
-			status: "'Pending'",
-			consignee: ' Hedged Equity ',
-		},
-		{
-			orderNo: 'OQ-151221-56954634-03953468',
-			date: '7/29/2018',
-			customer: 'TEsgtakso Inc',
-			status: "'Pending'",
-			consignee: ' Hedged Equity ',
-		},
-		{
-			orderNo: 'OQ-151221-56954634-03953468',
-			date: '7/29/2018',
-			customer: 'TEsgtakso Inc',
-			status: "'Pending'",
-			consignee: ' Hedged Equity ',
-		},
-		{
-			orderNo: 'OQ-151221-56954634-03953468',
-			date: '7/29/2018',
-			customer: 'TEsgtakso Inc',
-			status: "'Pending'",
-			consignee: ' Hedged Equity ',
-		},
-		{
-			orderNo: 'OQ-151221-56954634-03953468',
-			date: '7/29/2018',
-			customer: 'TEsgtakso Inc',
-			status: "'Pending'",
-			consignee: ' Hedged Equity ',
-		},
-		{
-			orderNo: 'OQ-151221-56954634-03953468',
-			date: '7/29/2018',
-			customer: 'TEsgtakso Inc',
-			status: "'Pending'",
-			consignee: ' Hedged Equity ',
-		},
-		{
-			orderNo: 'OQ-151221-56954634-03953468',
-			date: '7/29/2018',
-			customer: 'TEsgtakso Inc',
-			status: "'Pending'",
-			consignee: ' Hedged Equity ',
-		},
-		{
-			orderNo: 'OQ-151221-56954634-03953468',
-			date: '7/29/2018',
-			customer: 'TEsgtakso Inc',
-			status: "'Pending'",
-			consignee: ' Hedged Equity ',
-		},
-		{
-			orderNo: 'OQ-151221-56954634-03953468',
-			date: '7/29/2018',
-			customer: 'TEsgtakso Inc',
-			status: "'Pending'",
-			consignee: ' Hedged Equity ',
-		},
-		{
-			orderNo: 'OQ-151221-56954634-03953468',
-			date: '7/29/2018',
-			customer: 'TEsgtakso Inc',
-			status: "'Pending'",
-			consignee: ' Hedged Equity ',
-		},
-		{
-			orderNo: 'OQ-151221-56954634-03953468',
-			date: '7/29/2018',
-			customer: 'TEsgtakso Inc',
-			status: "'Pending'",
-			consignee: ' Hedged Equity ',
-		},
-	]);
+	const [data, setData] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [update, setUpdate] = useState(false);
 	const [key, setKey] = useState(null);
 
-	// useEffect(() => {
-	// 	async function fetchData() {
-	// 		const respond = await axios('https://my.api.mockaroo.com/shipments.json?key=5e0b62d0');
-	// 		setData(respond);
-	// 		setLoading(true);
-	// 	}
-	// 	fetchData();
-	// }, []);
+	useEffect(() => {
+		async function fetchData() {
+			const respond = await axios('https://my.api.mockaroo.com/shipments.json?key=5e0b62d0');
+			setData(respond);
+			setLoading(true);
+		}
+		fetchData();
+	}, []);
 
 	const handleDelete = (id) => {
 		const removeItem = data.filter((item) => item !== id);
@@ -147,28 +56,32 @@ function FormPage() {
 					</tr>
 				</thead>
 				<tbody>
-					{data.map((item, key) => (
-						<tr key={key + 1}>
-							<th scope='row'>{key + 1}</th>
-							<td>{item.orderNo}</td>
-							<td>{item.date}</td>
-							<td>{item.customer}</td>
-							<td>{item.status}</td>
-							<td>{item.consignee}</td>
-							<td>
-								<Edit
-									className='EditButton'
-									onClick={() => handleUpdate(!update, key)}
-								/>
-								<Delete
-									className='DeleteButton'
-									onClick={() => {
-										handleDelete(item);
-									}}
-								/>
-							</td>
-						</tr>
-					))}
+					{loading ? (
+						data.data.map((item, key) => (
+							<tr key={key + 1}>
+								<th scope='row'>{key + 1}</th>
+								<td>{item.orderNo}</td>
+								<td>{item.date}</td>
+								<td>{item.customer}</td>
+								<td>{item.status}</td>
+								<td>{item.consignee}</td>
+								<td>
+									<Edit
+										className='EditButton'
+										onClick={() => handleUpdate(!update, key)}
+									/>
+									<Delete
+										className='DeleteButton'
+										onClick={() => {
+											handleDelete(item);
+										}}
+									/>
+								</td>
+							</tr>
+						))
+					) : (
+						<CircularProgress />
+					)}
 				</tbody>
 			</table>
 		</div>
